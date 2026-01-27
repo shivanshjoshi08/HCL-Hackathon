@@ -7,7 +7,6 @@ on:
     branches: [main, kunal, develop]
 
 jobs:
-  # Simple Backend Check
   backend:
     name: Backend Check
     runs-on: ubuntu-latest
@@ -33,7 +32,6 @@ jobs:
         working-directory: ./backend
         run: node --check server.js
 
-  # Simple Frontend Check
   frontend:
     name: Frontend Check
     runs-on: ubuntu-latest
@@ -55,7 +53,6 @@ jobs:
         working-directory: ./frontend
         run: npm run build
 
-  # Success message
   success:
     name: All Checks Passed
     runs-on: ubuntu-latest
