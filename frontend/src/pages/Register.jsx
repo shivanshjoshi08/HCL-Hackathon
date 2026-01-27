@@ -102,33 +102,29 @@ function Register() {
   };
 
   return (
-    <section className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      <div className="flex min-h-screen flex-col items-center justify-center gap-6 px-4 py-12">
+    <section className="min-h-screen bg-muted">
+      <div className="flex min-h-screen flex-col items-center justify-center gap-8 px-4 py-12">
         {/* Logo */}
-        <div className="flex flex-col items-center gap-3 mb-2">
-          <div className="p-4 bg-white rounded-2xl shadow-lg">
-            <BankAppLogo className="h-14 w-14" />
-          </div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-            SmartBank
-          </h1>
+        <div className="flex items-center gap-3">
+          <BankAppLogo className="h-16 w-16" />
+          <h1 className="text-3xl font-bold text-primary">SmartBank</h1>
         </div>
 
-        <div className="flex w-full max-w-md flex-col items-start gap-y-6 rounded-2xl border border-gray-200 bg-white p-8 shadow-xl">
+        <div className="flex w-full max-w-md flex-col items-start gap-y-6 rounded-lg border border-muted-foreground/20 bg-white p-8 shadow-lg">
           <div className="flex flex-col items-start gap-y-2 w-full">
-            <h2 className="text-2xl font-semibold text-gray-800">
+            <h2 className="text-2xl font-semibold">
               {isAdminMode ? 'Admin Registration' : 'Create Account'}
             </h2>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-muted-foreground">
               {isAdminMode 
                 ? 'Register as bank admin (requires @smartbankapp.com email)' 
                 : 'Complete KYC to open your bank account'}
             </p>
             <div className="text-sm">
-              <span className="text-gray-500">Already have an account? </span>
+              <span className="text-muted-foreground">Already have an account? </span>
               <Link
                 to="/login"
-                className="font-medium text-blue-600 hover:text-blue-700 hover:underline"
+                className="font-medium text-primary hover:underline"
               >
                 Log in
               </Link>
