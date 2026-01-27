@@ -30,7 +30,7 @@ function Navbar() {
             className="flex items-center gap-2 hover:opacity-80 transition-opacity"
           >
             <BankAppLogo className="h-8 w-8" />
-            <span className="text-xl sm:text-2xl font-bold text-primary">BankApp</span>
+            <span className="text-xl sm:text-2xl font-bold text-primary">SmartBank</span>
           </Link>
 
           <div className="flex items-center gap-2 sm:gap-4">

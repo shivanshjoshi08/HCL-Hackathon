@@ -174,7 +174,26 @@ function KycUpload() {
               </div>
             )}
 
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center mb-6">
+            <div 
+              className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center mb-6 cursor-pointer hover:border-gray-400 hover:bg-gray-50 transition-colors"
+              onClick={() => fileInputRef.current?.click()}
+              onDragOver={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+              onDrop={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const droppedFile = e.dataTransfer.files[0];
+                if (droppedFile) {
+                  // Trigger file change handler with the dropped file
+                  const dataTransfer = new DataTransfer();
+                  dataTransfer.items.add(droppedFile);
+                  fileInputRef.current.files = dataTransfer.files;
+                  handleFileChange({ target: { files: [droppedFile] } });
+                }
+              }}
+            >
               {preview ? (
                 <div className="mb-4">
                   <img src={preview} alt="Preview" className="max-h-64 mx-auto rounded" />
@@ -195,17 +214,20 @@ function KycUpload() {
 
               <input
                 type="file"
+                ref={fileInputRef}
                 accept="image/jpeg,image/jpg,image/png,application/pdf"
                 onChange={handleFileChange}
                 className="hidden"
-                ref={fileInputRef}
                 id="fileInput"
               />
-              <Button
-                type="button"
-                variant="outline"
+              <Button 
+                type="button" 
+                variant="outline" 
                 className="mt-4"
-                onClick={() => fileInputRef.current.click()}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  fileInputRef.current?.click();
+                }}
               >
                 {file ? 'Change File' : 'Select File'}
               </Button>

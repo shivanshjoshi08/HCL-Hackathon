@@ -22,8 +22,13 @@ function Login() {
     setLoading(true);
 
     try {
-      await login({ email, password });
-      navigate('/dashboard');
+      const response = await login({ email, password });
+      // Redirect based on user role
+      if (response.data.user.role === 'admin') {
+        navigate('/admin/dashboard');
+      } else {
+        navigate('/dashboard');
+      }
     } catch (err) {
       setError(err.response?.data?.error?.message || 'Failed to login');
     } finally {

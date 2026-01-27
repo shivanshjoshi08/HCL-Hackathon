@@ -52,8 +52,8 @@ export default function Login() {
 
     const loginUser = async ({email, password}) => { 
       // Set the logged in to true for a user
-      const {data} = await axios.post(API_BACKEND_URL + "/auth/login", {
-          email: email,
+      const {data} = await axios.post(API_BACKEND_URL + "/login", {
+          username: email,
           password: password,
       });
     

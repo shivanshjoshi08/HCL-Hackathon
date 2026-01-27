@@ -24,6 +24,11 @@ export function AuthProvider({ children }) {
     return response;
   };
 
+  const registerAdmin = async (userData) => {
+    const response = await authService.registerAdmin(userData);
+    return response;
+  };
+
   const logout = () => {
     authService.logout();
     setUser(null);
@@ -33,6 +38,7 @@ export function AuthProvider({ children }) {
     user,
     login,
     register,
+    registerAdmin,
     logout,
     loading,
     isAuthenticated: !!user,

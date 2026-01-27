@@ -1,149 +1,162 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { accountService, transactionService } from '../services/auth';
-import { Button } from '../components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { ArrowUpRight, ArrowDownLeft } from 'lucide-react';
+import { ArrowUpRight, ArrowDownLeft, ArrowLeft, History } from 'lucide-react';
+import api from '../services/api';
 
 function Transactions() {
+  const navigate = useNavigate();
+  
+  // State
   const [accounts, setAccounts] = useState([]);
-  const [selectedAccountId, setSelectedAccountId] = useState('');
+  const [selectedAccount, setSelectedAccount] = useState('');
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
+  // Load accounts on page load
   useEffect(() => {
-    fetchAccounts();
+    loadAccounts();
   }, []);
 
+  // Load transactions when account changes
   useEffect(() => {
-    if (selectedAccountId) {
-      fetchTransactions();
+    if (selectedAccount) {
+      loadTransactions();
     }
-  }, [selectedAccountId]);
+  }, [selectedAccount]);
 
-  const fetchAccounts = async () => {
+  // Get user's accounts
+  async function loadAccounts() {
     try {
-      const response = await accountService.getAccounts();
-      setAccounts(response.data.accounts || []);
-      if (response.data.accounts && response.data.accounts.length > 0) {
-        setSelectedAccountId(response.data.accounts[0].id);
+      const response = await api.get('/accounts');
+      const userAccounts = response.data.data.accounts || [];
+      setAccounts(userAccounts);
+      
+      if (userAccounts.length > 0) {
+        setSelectedAccount(userAccounts[0].id);
       }
-    } catch (error) {
-      console.error('Error fetching accounts:', error);
+    } catch (err) {
+      console.log('Error loading accounts:', err);
     } finally {
       setLoading(false);
     }
-  };
+  }
 
-  const fetchTransactions = async () => {
+  // Get transactions for selected account
+  async function loadTransactions() {
     setLoading(true);
     try {
-      const response = await transactionService.getHistory(selectedAccountId, 50, 0);
-      setTransactions(response.data.transactions || []);
-    } catch (error) {
-      console.error('Error fetching transactions:', error);
+      const response = await api.get(`/transactions/history?accountId=${selectedAccount}&limit=50`);
+      setTransactions(response.data.data.transactions || []);
+    } catch (err) {
+      console.log('Error loading transactions:', err);
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-6xl mx-auto">
-        <Button 
-          variant="ghost" 
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-4xl mx-auto px-6 sm:px-8 lg:px-12 py-10">
+        
+        {/* Back Button */}
+        <button
           onClick={() => navigate('/dashboard')}
-          className="mb-4"
+          className="flex items-center text-gray-600 hover:text-gray-900 mb-6"
         >
-          ← Back to Dashboard
-        </Button>
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Back to Dashboard
+        </button>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Transaction History</CardTitle>
-            <CardDescription>
-              View all your account transactions
-            </CardDescription>
-            
-            <div className="mt-4">
-              <select
-                value={selectedAccountId}
-                onChange={(e) => setSelectedAccountId(e.target.value)}
-                className="flex h-10 w-full max-w-xs rounded-md border border-input bg-background px-3 py-2 text-sm"
-              >
-                {accounts.map((account) => (
-                  <option key={account.id} value={account.id}>
-                    {account.accountType} - {account.accountNumber}
-                  </option>
-                ))}
-              </select>
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">Transaction History</h1>
+          <p className="text-gray-500 mt-1">View all your account transactions</p>
+        </div>
+
+        {/* Account Selector */}
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-gray-700 mb-2">Select Account</label>
+          <select
+            value={selectedAccount}
+            onChange={(e) => setSelectedAccount(e.target.value)}
+            className="w-full max-w-md px-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            {accounts.map((account) => (
+              <option key={account.id} value={account.id}>
+                {account.accountType} - {account.accountNumber} (₹{Number(account.balance).toLocaleString()})
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Transactions List */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100">
+          {loading ? (
+            <div className="text-center py-12">
+              <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+              <p className="text-gray-500">Loading transactions...</p>
             </div>
-          </CardHeader>
-          <CardContent>
-            {loading ? (
-              <p className="text-center py-8">Loading transactions...</p>
-            ) : transactions.length === 0 ? (
-              <p className="text-muted-foreground text-center py-8">
-                No transactions found
-              </p>
-            ) : (
-              <div className="space-y-4">
-                {transactions.map((transaction) => (
-                  <div
-                    key={transaction.id}
-                    className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50"
-                  >
-                    <div className="flex items-center space-x-4">
-                      <div className={`p-3 rounded-full ${
-                        transaction.type === 'DEPOSIT' 
-                          ? 'bg-green-100' 
-                          : transaction.type === 'TRANSFER'
-                          ? 'bg-blue-100'
-                          : 'bg-orange-100'
+          ) : transactions.length === 0 ? (
+            <div className="text-center py-12">
+              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <History className="w-8 h-8 text-gray-400" />
+              </div>
+              <p className="text-gray-500">No transactions found</p>
+              <p className="text-sm text-gray-400 mt-1">Transactions will appear here</p>
+            </div>
+          ) : (
+            <div className="divide-y divide-gray-100">
+              {transactions.map((txn) => (
+                <div key={txn.id} className="p-5 hover:bg-gray-50 transition-colors">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      {/* Icon */}
+                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                        txn.transactionType === 'DEPOSIT' ? 'bg-green-100' : 'bg-blue-100'
                       }`}>
-                        {transaction.type === 'DEPOSIT' ? (
-                          <ArrowDownLeft className="h-5 w-5 text-green-600" />
+                        {txn.transactionType === 'DEPOSIT' ? (
+                          <ArrowDownLeft className="w-6 h-6 text-green-600" />
                         ) : (
-                          <ArrowUpRight className="h-5 w-5 text-blue-600" />
+                          <ArrowUpRight className="w-6 h-6 text-blue-600" />
                         )}
                       </div>
+                      
+                      {/* Details */}
                       <div>
-                        <p className="font-medium">{transaction.type}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {new Date(transaction.createdAt).toLocaleString()}
+                        <p className="font-semibold text-gray-900">{txn.transactionType}</p>
+                        <p className="text-sm text-gray-500">
+                          {new Date(txn.createdAt).toLocaleString('en-IN', {
+                            day: 'numeric',
+                            month: 'short',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })}
                         </p>
-                        {transaction.description && (
-                          <p className="text-sm text-muted-foreground">
-                            {transaction.description}
-                          </p>
-                        )}
-                        {transaction.otherParty && (
-                          <p className="text-sm text-muted-foreground">
-                            {transaction.otherParty}
-                          </p>
+                        {txn.description && (
+                          <p className="text-sm text-gray-400 mt-1">{txn.description}</p>
                         )}
                       </div>
                     </div>
+                    
+                    {/* Amount */}
                     <div className="text-right">
-                      <p className={`font-bold text-lg ${
-                        parseFloat(transaction.amount) > 0 
-                          ? 'text-green-600' 
-                          : 'text-red-600'
+                      <p className={`text-lg font-bold ${
+                        txn.transactionType === 'DEPOSIT' ? 'text-green-600' : 'text-gray-900'
                       }`}>
-                        {parseFloat(transaction.amount) > 0 ? '+' : ''}
-                        ₹{Math.abs(parseFloat(transaction.amount)).toFixed(2)}
+                        {txn.transactionType === 'DEPOSIT' ? '+' : '-'}₹{Number(txn.amount).toLocaleString()}
                       </p>
-                      <p className="text-sm text-muted-foreground">
-                        Balance: ₹{parseFloat(transaction.balanceAfter).toFixed(2)}
+                      <p className="text-sm text-gray-500">
+                        Balance: ₹{Number(txn.balanceAfter).toLocaleString()}
                       </p>
                     </div>
                   </div>
-                ))}
-              </div>
-            )}
-          </CardContent>
-        </Card>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
       </div>
     </div>
   );

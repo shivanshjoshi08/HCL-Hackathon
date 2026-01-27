@@ -55,7 +55,7 @@ export default function CreateAccount() {
   function createAccount({ name, email, password }) {
     axios
       .post(
-        API_BACKEND_URL + "/auth/create-account",
+        API_BACKEND_URL + "/api/create-account",
         JSON.stringify({
           name: name,
           email: email,

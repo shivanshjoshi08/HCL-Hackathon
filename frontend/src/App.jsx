@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
+import ChatWidget from './components/ChatWidget';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
@@ -134,6 +135,9 @@ function App() {
               }
             />
           </Routes>
+          
+          {/* Chatbot Widget - Shows on all pages */}
+          <ChatWidget />
         </div>
       </Router>
     </AuthProvider>

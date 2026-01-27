@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CreditCard, ArrowLeft } from 'lucide-react';
-import { Button } from '../components/ui/button';
 import api from '../services/api';
 
 function AdminAccounts() {
@@ -61,62 +60,65 @@ function AdminAccounts() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8">
+      <div className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 py-10">
         <button
           onClick={() => navigate('/admin/dashboard')}
-          className="flex items-center text-blue-600 hover:text-blue-800 mb-6"
+          className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 mb-6 transition-colors"
         >
-          <ArrowLeft className="h-4 w-4 mr-2" />
+          <ArrowLeft className="h-4 w-4 mr-1" />
           Back to Dashboard
         </button>
 
-        <h1 className="text-3xl font-bold mb-8">Account Management</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-8">Account Management</h1>
 
         {/* Search */}
-        <div className="bg-white p-4 rounded-lg shadow mb-6">
+        <div className="mb-6">
           <input
             type="text"
             placeholder="Search by account number, name, or email..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full px-4 py-2 border rounded"
+            className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <div className="bg-white p-4 rounded-lg shadow">
-            <p className="text-gray-600 text-sm">Total</p>
-            <p className="text-2xl font-bold">{accounts.length}</p>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+          <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+            <p className="text-gray-500 text-xs uppercase tracking-wide mb-1">Total</p>
+            <p className="text-2xl font-bold text-gray-900">{accounts.length}</p>
           </div>
-          <div className="bg-white p-4 rounded-lg shadow">
-            <p className="text-gray-600 text-sm">Active</p>
+          <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+            <p className="text-gray-500 text-xs uppercase tracking-wide mb-1">Active</p>
             <p className="text-2xl font-bold text-green-600">{activeCount}</p>
           </div>
-          <div className="bg-white p-4 rounded-lg shadow">
-            <p className="text-gray-600 text-sm">Frozen</p>
+          <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+            <p className="text-gray-500 text-xs uppercase tracking-wide mb-1">Frozen</p>
             <p className="text-2xl font-bold text-yellow-600">{frozenCount}</p>
           </div>
-          <div className="bg-white p-4 rounded-lg shadow">
-            <p className="text-gray-600 text-sm">Total Balance</p>
-            <p className="text-xl font-bold">₹{totalBalance.toLocaleString()}</p>
+          <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+            <p className="text-gray-500 text-xs uppercase tracking-wide mb-1">Total Balance</p>
+            <p className="text-xl font-bold text-gray-900">₹{totalBalance.toLocaleString()}</p>
           </div>
         </div>
 
         {/* Accounts List */}
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">All Accounts</h2>
         <div className="space-y-4">
           {filteredAccounts.map((account) => (
-            <div key={account.id} className="bg-white p-6 rounded-lg shadow">
+            <div key={account.id} className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
               <div className="flex flex-col lg:flex-row justify-between gap-6">
                 {/* Account Info */}
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-3">
-                    <CreditCard className="h-8 w-8 text-blue-500" />
-                    <div>
-                      <h3 className="font-bold text-lg">{account.accountNumber}</h3>
-                      <p className="text-sm text-gray-600">{account.accountType} Account</p>
+                    <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center">
+                      <CreditCard className="h-5 w-5 text-blue-600" />
                     </div>
-                    <span className={`ml-auto text-xs px-3 py-1 rounded font-semibold ${
+                    <div>
+                      <h3 className="font-bold text-lg text-gray-900">{account.accountNumber}</h3>
+                      <p className="text-sm text-gray-500">{account.accountType} Account</p>
+                    </div>
+                    <span className={`ml-auto text-xs px-3 py-1 rounded-full font-medium ${
                       account.status === 'ACTIVE' ? 'bg-green-100 text-green-700' :
                       account.status === 'FROZEN' ? 'bg-yellow-100 text-yellow-700' :
                       'bg-red-100 text-red-700'
@@ -124,52 +126,52 @@ function AdminAccounts() {
                       {account.status}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-600 mb-2">
+                  <p className="text-sm text-gray-600 mb-1">
                     Owner: {account.user.firstName} {account.user.lastName} • {account.user.email}
                   </p>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-gray-500">
                     Opened: {new Date(account.createdAt).toLocaleDateString()}
                   </p>
                 </div>
 
                 {/* Balance & Actions */}
-                <div className="flex flex-col items-end gap-3">
+                <div className="flex flex-col items-end gap-4">
                   <div className="text-right">
-                    <p className="text-gray-600 text-sm">Balance</p>
-                    <p className="text-3xl font-bold">₹{parseFloat(account.balance).toLocaleString()}</p>
+                    <p className="text-gray-500 text-xs uppercase tracking-wide">Balance</p>
+                    <p className="text-2xl font-bold text-gray-900">₹{parseFloat(account.balance).toLocaleString()}</p>
                   </div>
                   
                   {account.status === 'ACTIVE' && (
-                    <Button
+                    <button
                       onClick={() => updateStatus(account.id, 'FROZEN')}
                       disabled={updating === account.id}
-                      className="bg-yellow-600 hover:bg-yellow-700"
+                      className="px-4 py-2 text-sm font-medium text-yellow-700 bg-yellow-50 border border-yellow-200 rounded-lg hover:bg-yellow-100 transition-colors disabled:opacity-50"
                     >
                       {updating === account.id ? 'Freezing...' : 'Freeze Account'}
-                    </Button>
+                    </button>
                   )}
                   
                   {account.status === 'FROZEN' && (
                     <div className="flex gap-2">
-                      <Button
+                      <button
                         onClick={() => updateStatus(account.id, 'ACTIVE')}
                         disabled={updating === account.id}
-                        className="bg-green-600 hover:bg-green-700"
+                        className="px-4 py-2 text-sm font-medium text-green-700 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors disabled:opacity-50"
                       >
                         {updating === account.id ? 'Activating...' : 'Activate'}
-                      </Button>
-                      <Button
+                      </button>
+                      <button
                         onClick={() => updateStatus(account.id, 'CLOSED')}
                         disabled={updating === account.id}
-                        className="bg-red-600 hover:bg-red-700"
+                        className="px-4 py-2 text-sm font-medium text-red-700 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 transition-colors disabled:opacity-50"
                       >
                         {updating === account.id ? 'Closing...' : 'Close'}
-                      </Button>
+                      </button>
                     </div>
                   )}
                   
                   {account.status === 'CLOSED' && (
-                    <div className="text-sm text-gray-500 bg-gray-100 px-4 py-2 rounded">
+                    <div className="text-sm text-gray-500 bg-gray-100 px-4 py-2 rounded-lg">
                       Account Closed
                     </div>
                   )}
@@ -180,7 +182,7 @@ function AdminAccounts() {
         </div>
 
         {filteredAccounts.length === 0 && (
-          <div className="bg-white p-12 rounded-lg shadow text-center">
+          <div className="bg-white p-12 rounded-xl shadow-sm border border-gray-100 text-center">
             <p className="text-gray-500">No accounts found</p>
           </div>
         )}

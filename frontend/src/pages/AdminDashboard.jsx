@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Users, CreditCard, Activity, DollarSign, FileCheck } from 'lucide-react';
+import { Users, CreditCard, Activity, DollarSign } from 'lucide-react';
 import api from '../services/api';
 
 function AdminDashboard() {
@@ -37,118 +37,95 @@ function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8">Admin Dashboard</h1>
+      <div className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 py-10">
+        <h1 className="text-3xl font-bold mb-8 text-gray-900">Admin Dashboard</h1>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white p-6 rounded-lg shadow">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
+          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-600 text-sm">Total Users</p>
-                <p className="text-3xl font-bold">{stats?.totalUsers || 0}</p>
+                <p className="text-gray-500 text-xs uppercase tracking-wide mb-1">Total Users</p>
+                <p className="text-3xl font-bold text-gray-900">{stats?.totalUsers || 0}</p>
               </div>
-              <Users className="h-10 w-10 text-blue-500" />
+              <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center">
+                <Users className="h-6 w-6 text-blue-600" />
+              </div>
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-lg shadow">
+          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-600 text-sm">Total Accounts</p>
-                <p className="text-3xl font-bold">{stats?.totalAccounts || 0}</p>
+                <p className="text-gray-500 text-xs uppercase tracking-wide mb-1">Total Accounts</p>
+                <p className="text-3xl font-bold text-gray-900">{stats?.totalAccounts || 0}</p>
               </div>
-              <CreditCard className="h-10 w-10 text-green-500" />
+              <div className="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center">
+                <CreditCard className="h-6 w-6 text-green-600" />
+              </div>
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-lg shadow">
+          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-600 text-sm">Total Balance</p>
-                <p className="text-2xl font-bold">₹{parseFloat(stats?.totalBalance || 0).toLocaleString()}</p>
+                <p className="text-gray-500 text-xs uppercase tracking-wide mb-1">Total Balance</p>
+                <p className="text-2xl font-bold text-gray-900">₹{parseFloat(stats?.totalBalance || 0).toLocaleString()}</p>
               </div>
-              <DollarSign className="h-10 w-10 text-purple-500" />
+              <div className="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center">
+                <DollarSign className="h-6 w-6 text-purple-600" />
+              </div>
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-lg shadow">
+          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-600 text-sm">Today's Transactions</p>
-                <p className="text-3xl font-bold">{stats?.todayTransactions || 0}</p>
+                <p className="text-gray-500 text-xs uppercase tracking-wide mb-1">Today's Transactions</p>
+                <p className="text-3xl font-bold text-gray-900">{stats?.todayTransactions || 0}</p>
               </div>
-              <Activity className="h-10 w-10 text-orange-500" />
+              <div className="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center">
+                <Activity className="h-6 w-6 text-orange-600" />
+              </div>
             </div>
           </div>
         </div>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           <button
             onClick={() => navigate('/admin/users')}
-            className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition text-left"
+            className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 text-left border border-gray-100 hover:border-blue-300"
           >
-            <Users className="h-8 w-8 text-blue-500 mb-3" />
-            <h3 className="font-semibold text-lg mb-2">Manage Users</h3>
-            <p className="text-gray-600 text-sm">View and manage customers</p>
+            <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
+              <Users className="h-6 w-6 text-blue-600" />
+            </div>
+            <h3 className="font-semibold text-gray-900 mb-1">Manage Users</h3>
+            <p className="text-gray-500 text-sm">View and manage customers</p>
           </button>
 
           <button
             onClick={() => navigate('/admin/accounts')}
-            className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition text-left"
+            className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 text-left border border-gray-100 hover:border-green-300"
           >
-            <CreditCard className="h-8 w-8 text-green-500 mb-3" />
-            <h3 className="font-semibold text-lg mb-2">Manage Accounts</h3>
-            <p className="text-gray-600 text-sm">Freeze or close accounts</p>
+            <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-4">
+              <CreditCard className="h-6 w-6 text-green-600" />
+            </div>
+            <h3 className="font-semibold text-gray-900 mb-1">Manage Accounts</h3>
+            <p className="text-gray-500 text-sm">Freeze or close accounts</p>
           </button>
 
           <button
             onClick={() => navigate('/admin/transactions')}
-            className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition text-left"
+            className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 text-left border border-gray-100 hover:border-purple-300"
           >
-            <Activity className="h-8 w-8 text-purple-500 mb-3" />
-            <h3 className="font-semibold text-lg mb-2">View Transactions</h3>
-            <p className="text-gray-600 text-sm">Monitor all activity</p>
+            <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mb-4">
+              <Activity className="h-6 w-6 text-purple-600" />
+            </div>
+            <h3 className="font-semibold text-gray-900 mb-1">View Transactions</h3>
+            <p className="text-gray-500 text-sm">Monitor all activity</p>
           </button>
-
-          <button
-            onClick={() => navigate('/admin/kyc')}
-            className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition text-left"
-          >
-            <FileCheck className="h-8 w-8 text-blue-500 mb-3" />
-            <h3 className="font-semibold text-lg mb-2">KYC Verification</h3>
-            <p className="text-gray-600 text-sm">Verify customer documents</p>
-          </button>
-        </div>
-
-        {/* Recent Activity */}
-        <div className="bg-white rounded-lg shadow">
-          <div className="p-6 border-b">
-            <h2 className="text-xl font-semibold">Recent Transactions</h2>
-          </div>
-          <div className="p-6">
-            {stats?.recentTransactions?.length > 0 ? (
-              <div className="space-y-3">
-                {stats.recentTransactions.map((txn) => (
-                  <div key={txn.id} className="flex items-center justify-between p-4 bg-gray-50 rounded">
-                    <div>
-                      <p className="font-semibold">{txn.transactionType}</p>
-                      <p className="text-sm text-gray-600">
-                        {txn.fromAccount?.accountNumber || 'N/A'} → {txn.toAccount?.accountNumber || 'N/A'}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-bold">₹{parseFloat(txn.amount).toLocaleString()}</p>
-                      <p className="text-sm text-gray-600">{new Date(txn.createdAt).toLocaleTimeString()}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-center text-gray-500 py-8">No transactions yet</p>
-            )}
-          </div>
         </div>
       </div>
     </div>
