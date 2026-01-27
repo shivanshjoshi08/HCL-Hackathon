@@ -1,0 +1,84 @@
+@import "./variable.scss";
+html,
+body {
+  margin: 0;
+
+  height: 100vh;
+}
+
+#root {
+  height: 100%;
+}
+
+$primary: #e6e6ff;
+$purple-100: #8989c8;
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin-bottom: 0;
+}
+
+small {
+  display: inline-block;
+}
+.card {
+  background-color: $purple;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 1.5rem;
+  height: 100%;
+  .card-inner {
+    width: 28rem;
+    background: white;
+    border-radius: 0.5rem;
+    padding: 2rem;
+  }
+  &-home {
+    background-color: white;
+    text-align: start;
+    border: none;
+    align-items: unset;
+  }
+}
+.navbar {
+    position: sticky;
+    top:0;
+    width: 100%;
+    z-index: 99;
+  &-nav {
+    .nav-link.active {
+      background-color: $purple-100;
+      border-radius: 0.5rem;
+      color: white;
+    }
+  }
+}
+.navbar-nav .nav-link.active {
+  color: white;
+}
+
+.flex {
+  display: flex;
+  flex-direction: column;
+}
+.bg-purple {
+  background: $primary;
+}
+
+.table {
+  &-stripe {
+    > tbody {
+      > tr:nth-of-type(odd) > * {
+        background-color: rgba($purple, 0.48);
+      }
+    }
+  }
+}
