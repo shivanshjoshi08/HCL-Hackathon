@@ -33,7 +33,7 @@ async function createAdmin() {
         email: adminEmail,
         password: hashedPassword,
         firstName: 'Admin',
-        lastName: 'BankApp',
+        lastName: 'SmartBank',
         role: 'admin',
       },
     });

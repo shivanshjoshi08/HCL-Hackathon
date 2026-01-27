@@ -12,8 +12,8 @@ export const generateToken = (user) => {
 
   return jwt.sign(payload, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN || '24h',
-    issuer: 'BankApp',
-    audience: 'BankApp-Users',
+    issuer: 'SmartBank',
+    audience: 'SmartBank-Users',
   });
 };
 
@@ -27,8 +27,8 @@ export const generateRefreshToken = (userId) => {
 
   return jwt.sign(payload, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d',
-    issuer: 'BankApp',
-    audience: 'BankApp-Users',
+    issuer: 'SmartBank',
+    audience: 'SmartBank-Users',
   });
 };
 
@@ -36,8 +36,8 @@ export const generateRefreshToken = (userId) => {
 export const verifyToken = (token) => {
   try {
     return jwt.verify(token, process.env.JWT_SECRET, {
-      issuer: 'BankApp',
-      audience: 'BankApp-Users',
+      issuer: 'SmartBank',
+      audience: 'SmartBank-Users',
     });
   } catch (error) {
     throw new Error('Invalid or expired token');

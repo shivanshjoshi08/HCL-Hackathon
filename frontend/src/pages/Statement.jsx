@@ -111,7 +111,7 @@ function Statement() {
         <div className="bg-white rounded-lg shadow p-8 print:shadow-none">
           {/* Header */}
           <div className="text-center mb-8 border-b pb-6">
-            <h1 className="text-3xl font-bold text-blue-600 mb-2">BankApp</h1>
+            <h1 className="text-3xl font-bold text-blue-600 mb-2">SmartBank</h1>
             <h2 className="text-xl font-semibold">Account Statement</h2>
           </div>
 
