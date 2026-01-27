@@ -9,7 +9,7 @@ import accountRoutes from './src/routes/account.routes.js';
 import transactionRoutes from './src/routes/transaction.routes.js';
 import adminRoutes from './src/routes/admin.routes.js';
 import kycRoutes from './src/routes/kyc.routes.js';
-import { register } from './src/controllers/auth.controller.js';
+import chatbotRoutes from './src/routes/chatbot.routes.js';
 import { errorHandler } from './src/middleware/errorHandler.js';
 import { apiLimiter } from './src/middleware/rateLimiter.js';
 
@@ -53,18 +53,16 @@ app.get('/health', (req, res) => {
   });
 });
 
-// Legacy create account route
-app.post('/create', register);
-
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/accounts', accountRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/kyc', kycRoutes);
+app.use('/api/chatbot', chatbotRoutes);
 
 // 404 handler
-app.use((req, res) => {
+app.all('*', (req, res) => {
   res.status(404).json({
     success: false,
     error: {
