@@ -9,6 +9,7 @@ import accountRoutes from './src/routes/account.routes.js';
 import transactionRoutes from './src/routes/transaction.routes.js';
 import adminRoutes from './src/routes/admin.routes.js';
 import kycRoutes from './src/routes/kyc.routes.js';
+import { register } from './src/controllers/auth.controller.js';
 import { errorHandler } from './src/middleware/errorHandler.js';
 import { apiLimiter } from './src/middleware/rateLimiter.js';
 
@@ -51,6 +52,9 @@ app.get('/health', (req, res) => {
     timestamp: new Date().toISOString(),
   });
 });
+
+// Legacy create account route
+app.post('/create', register);
 
 // Routes
 app.use('/api/auth', authRoutes);

@@ -66,6 +66,54 @@ export const register = async (req, res, next) => {
   }
 };
 
+// Admin Registration - Only @smartbankapp.com domain allowed
+export const registerAdmin = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+
+    // Validate email domain
+    if (!email.endsWith('@smartbankapp.com')) {
+      return next(new AppError('Admin registration requires @smartbankapp.com email domain', 400));
+    }
+
+    // Check if user already exists
+    const existingUser = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (existingUser) {
+      return next(new AppError('User with this email already exists', 400));
+    }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 12);
+
+    // Create admin user (no account needed for admin)
+    const user = await prisma.user.create({
+      data: {
+        email,
+        password: hashedPassword,
+        firstName: 'Admin',
+        lastName: email.split('@')[0], // Use email prefix as lastName
+        role: 'admin',
+        kycStatus: 'VERIFIED', // Admins are auto-verified
+      },
+    });
+
+    res.status(201).json({
+      success: true,
+      message: 'Admin registered successfully',
+      data: {
+        userId: user.id,
+        email: user.email,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;

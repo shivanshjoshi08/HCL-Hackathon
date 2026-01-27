@@ -1,5 +1,5 @@
 import React from "react";
 export const UserContext = React.createContext(null);
-export const API_BACKEND_URL = process.env.REACT_APP_API_BACKEND_URL || "http://localhost:8080";
+export const API_BACKEND_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 console.log("API URL:", API_BACKEND_URL);
 export default UserContext;

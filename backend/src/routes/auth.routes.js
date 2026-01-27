@@ -1,6 +1,6 @@
 import express from 'express';
 import { body } from 'express-validator';
-import { register, login } from '../controllers/auth.controller.js';
+import { register, login, registerAdmin } from '../controllers/auth.controller.js';
 import { validate } from '../middleware/validator.js';
 import { authLimiter } from '../middleware/rateLimiter.js';
 
@@ -18,6 +18,16 @@ const registerValidation = [
   body('lastName').trim().notEmpty().withMessage('Last name is required'),
 ];
 
+// Admin registration validation (simpler - only email and password)
+const adminRegisterValidation = [
+  body('email').isEmail().normalizeEmail().withMessage('Please provide a valid email'),
+  body('password')
+    .isLength({ min: 8 })
+    .withMessage('Password must be at least 8 characters')
+    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
+    .withMessage('Password must contain uppercase, lowercase, and number'),
+];
+
 // Login validation
 const loginValidation = [
   body('email').isEmail().normalizeEmail().withMessage('Please provide a valid email'),
@@ -26,6 +36,7 @@ const loginValidation = [
 
 // Apply rate limiting to auth routes
 router.post('/register', authLimiter, registerValidation, validate, register);
+router.post('/register-admin', authLimiter, adminRegisterValidation, validate, registerAdmin);
 router.post('/login', authLimiter, loginValidation, validate, login);
 
 export default router;

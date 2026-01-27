@@ -57,7 +57,7 @@ export default function Deposit() {
   const depositAmount = ({ amount }) => {
     axios
       .post(
-        API_BACKEND_URL + "/api/deposit",
+        API_BACKEND_URL + "/transactions/deposit",
         JSON.stringify({
           amount: Number(amount),
         }),

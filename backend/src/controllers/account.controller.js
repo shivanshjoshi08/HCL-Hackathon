@@ -74,6 +74,18 @@ export const createAccount = async (req, res, next) => {
       return next(new AppError('Invalid account type. Must be SAVINGS, CURRENT, or FD', 400));
     }
 
+    // Check if user already has an account of this type
+    const existingAccount = await prisma.account.findFirst({
+      where: {
+        userId: req.user.id,
+        accountType: accountType,
+      },
+    });
+
+    if (existingAccount) {
+      return next(new AppError(`You already have a ${accountType} account. Only one account per type is allowed.`, 400));
+    }
+
     // Validate initial deposit based on account type
     const minDepositMap = {
       'CURRENT': 0,
