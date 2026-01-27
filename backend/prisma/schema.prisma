@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  password     String
+  firstName    String
+  lastName     String
+  phone        String?
+  address      String?
+  dateOfBirth  String?
+  idType       String?
+  idNumber     String?
+  documentUrl  String?  // Cloudinary URL for KYC document
+  kycStatus    String   @default("PENDING") // PENDING, VERIFIED, REJECTED
+  kycRejectionReason String? // Reason if rejected
+  role         String   @default("customer") // customer, admin
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  accounts Account[]
+
+  @@map("users")
+}
+
+model Account {
+  id            String   @id @default(uuid())
+  accountNumber String   @unique
+  accountType   String   // SAVINGS, CHECKING, CURRENT, FD
+  balance       Decimal  @default(0) @db.Decimal(15, 2)
+  dailyLimit    Decimal  @default(50000) @db.Decimal(15, 2)
+  status        String   @default("ACTIVE") // ACTIVE, FROZEN, CLOSED
+  userId        String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user              User          @relation(fields: [userId], references: [id])
+  transactionsFrom  Transaction[] @relation("FromAccount")
+  transactionsTo    Transaction[] @relation("ToAccount")
+
+  @@map("accounts")
+}
+
+model Transaction {
+  id              String   @id @default(uuid())
+  fromAccountId   String?
+  toAccountId     String?
+  transactionType String   // DEPOSIT, WITHDRAWAL, TRANSFER
+  amount          Decimal  @db.Decimal(15, 2)
+  balanceAfter    Decimal  @db.Decimal(15, 2)
+  description     String?
+  status          String   @default("COMPLETED") // PENDING, COMPLETED, FAILED
+  createdAt       DateTime @default(now())
+
+  fromAccount Account? @relation("FromAccount", fields: [fromAccountId], references: [id])
+  toAccount   Account? @relation("ToAccount", fields: [toAccountId], references: [id])
+
+  @@map("transactions")
+}
