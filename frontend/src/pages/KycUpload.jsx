@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Upload, FileText, CheckCircle, XCircle, Clock } from 'lucide-react';
 import { Button } from '../components/ui/button';
@@ -6,6 +6,7 @@ import api from '../services/api';
 
 function KycUpload() {
   const navigate = useNavigate();
+  const fileInputRef = useRef(null);
   const [kycStatus, setKycStatus] = useState(null);
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
@@ -197,15 +198,17 @@ function KycUpload() {
                 accept="image/jpeg,image/jpg,image/png,application/pdf"
                 onChange={handleFileChange}
                 className="hidden"
+                ref={fileInputRef}
                 id="fileInput"
               />
-              <label htmlFor="fileInput">
-                <Button type="button" variant="outline" className="mt-4" asChild>
-                  <span className="cursor-pointer">
-                    {file ? 'Change File' : 'Select File'}
-                  </span>
-                </Button>
-              </label>
+              <Button
+                type="button"
+                variant="outline"
+                className="mt-4"
+                onClick={() => fileInputRef.current.click()}
+              >
+                {file ? 'Change File' : 'Select File'}
+              </Button>
             </div>
 
             <div className="space-y-2 mb-6 text-sm text-gray-600">
