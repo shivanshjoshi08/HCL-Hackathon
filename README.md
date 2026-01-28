@@ -561,8 +561,8 @@ npm run dev
 
 | Role | Email | Password |
 |------|-------|----------|
-| Customer | test@example.com | Password123 |
-| Admin | admin@smartbankapp.com | Admin123! |
+| User | admin11@bankapp.com | Admin@123 |
+| Admin | admin@smartbankapp.com | admin123 |
 
 ---
 
