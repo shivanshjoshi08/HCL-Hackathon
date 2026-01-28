@@ -79,7 +79,7 @@ export const deposit = async (req, res, next) => {
 
     // Validate amount
     if (amount <= 0) {
-      return next(new AppError('Amount must be greater than 0', 400));
+      return next(new AppError('Amount must be greater than zero', 400));
     }
 
     // Check if account belongs to user
@@ -170,7 +170,7 @@ export const transfer = async (req, res, next) => {
 
     // Check sufficient balance
     if (parseFloat(fromAccount.balance) < amount) {
-      return next(new AppError('Insufficient balance', 400));
+      return next(new AppError('your balance is not sufficient', 400));
     }
 
     // Check daily limit

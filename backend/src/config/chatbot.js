@@ -1,5 +1,5 @@
 export const botConfig = {
-  botName: 'SmartBank Assistant',
+  botName: 'SmartBank Assistant V2',
 
   personality: {
     tone: 'helpful, professional and friendly',

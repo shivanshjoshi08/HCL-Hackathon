@@ -77,7 +77,7 @@ app.use('/api/kyc', kycRoutes);
 app.use('/api/chatbot', chatbotRoutes);
 
 // 404 handler
-app.all('*', (req, res) => {
+app.use((req, res) => {
   res.status(404).json({
     success: false,
     error: {
