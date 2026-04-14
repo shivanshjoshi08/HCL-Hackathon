@@ -77,7 +77,7 @@ function Deposit() {
       setShowSuccess(true);
 
     } catch (err) {
-      setError(err.response?.data?.error?.message || 'Deposit failed. Please try again.');
+      setError(err.response?.data?.error?.errors?.[0]?.msg || err.response?.data?.error?.message || 'Deposit failed. Please try again.');
     } finally {
       setLoading(false);
     }

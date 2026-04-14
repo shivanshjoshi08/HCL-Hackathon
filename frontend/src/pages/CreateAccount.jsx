@@ -49,7 +49,7 @@ function CreateAccount() {
       alert(`✅ Account created successfully!\nAccount Number: ${response.data.data.account.accountNumber}`);
       navigate('/accounts');
     } catch (err) {
-      setError(err.response?.data?.error?.message || 'Failed to create account');
+      setError(err.response?.data?.error?.errors?.[0]?.msg || err.response?.data?.error?.message || 'Failed to create account');
     } finally {
       setLoading(false);
     }

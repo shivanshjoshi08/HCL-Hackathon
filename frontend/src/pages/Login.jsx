@@ -30,7 +30,7 @@ function Login() {
         navigate('/dashboard');
       }
     } catch (err) {
-      setError(err.response?.data?.error?.message || 'Failed to login');
+      setError(err.response?.data?.error?.errors?.[0]?.msg || err.response?.data?.error?.message || 'Failed to login');
     } finally {
       setLoading(false);
     }

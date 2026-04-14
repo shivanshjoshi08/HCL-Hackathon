@@ -82,7 +82,7 @@ function KycUpload() {
       setFile(null);
       setPreview(null);
     } catch (err) {
-      setError(err.response?.data?.error?.message || 'Failed to upload document');
+      setError(err.response?.data?.error?.errors?.[0]?.msg || err.response?.data?.error?.message || 'Failed to upload document');
     } finally {
       setLoading(false);
     }

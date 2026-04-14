@@ -78,7 +78,7 @@ function Register() {
       }
       navigate('/login');
     } catch (err) {
-      setError(err.response?.data?.error?.message || 'Failed to register');
+      setError(err.response?.data?.error?.errors?.[0]?.msg || err.response?.data?.error?.message || 'Failed to register');
     } finally {
       setLoading(false);
     }
