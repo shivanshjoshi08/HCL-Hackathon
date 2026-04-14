@@ -1,7 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { X, ArrowUp, Bot } from 'lucide-react';
 
-const API_URL = 'http://localhost:5000/api/chatbot';
+let BASE_URL = import.meta.env.VITE_API_URL || 'https://hcl-hackathon-ruz1.onrender.com/api';
+if (BASE_URL.endsWith('/')) BASE_URL = BASE_URL.slice(0, -1);
+if (!BASE_URL.endsWith('/api')) BASE_URL += '/api';
+const API_URL = `${BASE_URL}/chatbot`;
 
 const SUGGESTIONS = [
   'How do I transfer money?',

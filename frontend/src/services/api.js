@@ -1,7 +1,13 @@
 import axios from 'axios';
 
-// Use environment variable, fallback to localhost for development
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+let API_URL = import.meta.env.VITE_API_URL || 'https://hcl-hackathon-ruz1.onrender.com/api';
+// Ensure the URL ends with /api
+if (API_URL.endsWith('/')) {
+  API_URL = API_URL.slice(0, -1);
+}
+if (!API_URL.endsWith('/api')) {
+  API_URL += '/api';
+}
 
 const api = axios.create({
   baseURL: API_URL,
